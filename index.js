@@ -7,7 +7,7 @@ const { create, read, update, deleteOne } = require("./dbQuery");
 app.use(express.urlencoded());
 
 pool.connect().then((row) => {
-  console.log("dbconnected :", row._connected);
+  console.log("db is connected :", row._connected);
 });
 
 // app.get("/", function (req, res) {
