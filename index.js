@@ -1,33 +1,32 @@
 const express = require("express");
 const app = express();
-const pool = require("./dbcon");
 require("dotenv").config();
+
+//importing db-connection query and crud query
+const pool = require("./dbcon");
 const { create, read, update, deleteOne } = require("./dbQuery");
 
 app.use(express.urlencoded());
 
+//connection method for database connection everytime server starts
 pool.connect().then((row) => {
   console.log("db is connected :", row._connected);
 });
 
-// app.get("/", function (req, res) {
-//   res.send("Hello World");
-// });
-
-//post data
+//posting data to database
 app.post("/", async (req, res) => {
   const name = await req.body.name;
   const out = await create(name);
   res.send(out);
 });
 
-//get all data
+//getting all data from database
 app.get("/", async (req, res) => {
   const out = await read();
   res.send(out.rows);
 });
 
-//update data
+//updating a data with particular id passed in URL
 app.put("/:id", async (req, res) => {
   const out = await update(req.body.name, req.params.id);
   res.send(out.rows);
@@ -39,6 +38,7 @@ app.delete("/:id", async (req, res) => {
   res.send(out.rows);
 });
 
+//starting a server
 app.listen(process.env.PORT, () => {
   console.log("server running on port:", process.env.PORT);
 });
